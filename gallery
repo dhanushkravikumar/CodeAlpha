@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Gallery</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(120deg, #f6d365, #fda085);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .gallery-container {
+      width: 80%;
+      max-width: 1200px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border: 2px solid #fff;
+    }
+
+    .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .nav button {
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #333;
+      border-radius: 5px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease;
+    }
+
+    .nav button:hover {
+      background: #fda085;
+      color: white;
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .dots span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 5px;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .dots .active {
+      background: #fda085;
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery-container">
+    <div class="gallery">
+      <img src="https://via.placeholder.com/1200x600/FF5733/FFFFFF?text=Image+1" alt="Image 1">
+      <img src="https://via.placeholder.com/1200x600/33FF57/FFFFFF?text=Image+2" alt="Image 2">
+      <img src="https://via.placeholder.com/1200x600/3357FF/FFFFFF?text=Image+3" alt="Image 3">
+      <img src="https://via.placeholder.com/1200x600/FF33A1/FFFFFF?text=Image+4" alt="Image 4">
+    </div>
+    <div class="nav">
+      <button id="prev">&#8592; Prev</button>
+      <button id="next">Next &#8594;</button>
+    </div>
+    <div class="dots"></div>
+  </div>
+
+  <script>
+    const gallery = document.querySelector('.gallery');
+    const images = document.querySelectorAll('.gallery img');
+    const dotsContainer = document.querySelector('.dots');
+    const prevButton = document.getElementById('prev');
+    const nextButton = document.getElementById('next');
+
+    let currentIndex = 0;
+
+    function updateGallery() {
+      gallery.style.transform = `translateX(-${currentIndex * 100}%)`;
+      updateDots();
+    }
+
+    function updateDots() {
+      document.querySelectorAll('.dots span').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    images.forEach(() => {
+      const dot = document.createElement('span');
+      dotsContainer.appendChild(dot);
+    });
+
+    updateDots();
+
+    prevButton.addEventListener('click', () => {
+      currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+      updateGallery();
+    });
+
+    nextButton.addEventListener('click', () => {
+      currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+      updateGallery();
+    });
+
+    document.querySelectorAll('.dots span').forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        currentIndex = index;
+        updateGallery();
+      });
+    });
+  </script>
+</body>
+</html>
